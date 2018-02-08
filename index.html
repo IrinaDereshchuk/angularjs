@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body ng-app="WorkersModule" ng-cloak>
+
+<div ng-controller="WorkersController">
+
+    <ul>
+        <li ng-repeat="worker in workersList">
+            <div class="worker-data">
+                <p class="department" ng-if="worker.department" >{{worker.department}}</p>
+                <div ng-click="showEditDialog(worker)">
+                    <p class="name" ng-if="worker.name"><strong>{{worker.name}}</strong></p>
+                    <p class="title" ng-if="worker.title">{{worker.title}}</p>
+                </div>
+            </div>
+            <div ng-if="showChildrens(worker)" ng-include="'childrens.html'"></div>
+        </li>
+    </ul>
+
+    <div class="btn-block">
+        <button ng-click="exportWorkersList()">Export</button>
+    </div>
+
+    <script type="text/ng-template" id="childrens.html">
+        <ul>
+            <li ng-repeat="worker in worker.children">
+                <div class="worker-data">
+                    <p class="department" ng-if="worker.department" >{{worker.department}}</p>
+                    <div ng-click="showEditDialog(worker)">
+                        <p class="name" ng-if="worker.name"><strong>{{worker.name}}</strong></p>
+                        <p class="title" ng-if="worker.title">{{worker.title}}</p>
+                    </div>
+                </div>
+                <div ng-if="showChildrens(worker)" ng-include="'childrens.html'"></div>
+            </li>
+        </ul>
+    </script>
+
+    <div class="ng-modal" ng-if ="modalShown">
+        <div class="modal-overlay" ng-click="dismissChanges()"></div>
+        <div class="modal-content">
+            <div class="modal-close" ng-click="dismissChanges()">X</div>
+            <h1 class="modal-header">Edit Dialog</h1>
+            <div  class="modal-form">
+                <input type="text" ng-model="worker.department">
+                <input type="text" ng-model="worker.name">
+                <input type="text" ng-model="worker.title">
+                <hr>
+                <div class="btn-block">
+                    <button ng-click="save()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="./bundle.js"></script>
+
+</body>
+
+</html>
